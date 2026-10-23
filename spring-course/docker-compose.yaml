@@ -1,0 +1,13 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: dblocale
+      POSTGRES_USER: locale
+      POSTGRES_PASSWORD: locale
+    ports:
+      - "5433:5432"
+    volumes:
+      - dati-dblocale:/var/lib/postgresql/data
+volumes:
+  dati-dblocale:

@@ -1,4 +1,20 @@
 package com.example.spring_course.service.mapper;
 
-public class MapperUserDTO {
+import com.example.spring_course.model.UserRequest;
+import com.example.spring_course.service.dto.UserRequestDTO;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
+
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public abstract class MapperUserDTO {
+    @Mapping(
+        target = "address",
+        expression = "java(mapAddress(userRequest.getCity(), userRequest.getNation()))"
+    )
+    public abstract UserRequestDTO toRequestDTO(UserRequest userRequest);
+
+    public String mapAddress(String city, String nation){
+        return city + " - " + nation;
+    }
 }
