@@ -1,9 +1,8 @@
 package com.example.spring_course.service.mapper;
 
-import com.example.spring_course.controller.model.UserResponse;
+import com.example.spring_course.model.UserResponse;
 import com.example.spring_course.service.dto.UserResponseDTO;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)

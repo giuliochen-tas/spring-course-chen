@@ -1,6 +1,6 @@
 package com.example.spring_course.service.mapper;
 
-import com.example.spring_course.controller.model.UserRequest;
+import com.example.spring_course.model.UserRequest;
 import com.example.spring_course.service.dto.UserRequestDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

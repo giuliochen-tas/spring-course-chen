@@ -1,7 +1,7 @@
 package com.example.spring_course.controller;
 
-import com.example.spring_course.controller.model.UserRequest;
-import com.example.spring_course.controller.model.UserResponse;
+import com.example.spring_course.model.UserRequest;
+import com.example.spring_course.model.UserResponse;
 import com.example.spring_course.repository.model.UserEntity;
 import com.example.spring_course.service.UserService;
 import com.example.spring_course.service.dto.UserRequestDTO;
@@ -36,6 +36,11 @@ public class UserController {
     @GetMapping("/getAllUsers")
     public ResponseEntity<List<UserEntity>> getAllUsers(){
         return ResponseEntity.ok(userService.getAllUsers());
+    }
+
+    @GetMapping("/getUser/{id}")
+    public ResponseEntity<List<UserEntity>> getUsersByName(@PathVariable Long id){
+        return ResponseEntity.ok(userService.findById(id));
     }
 
     @GetMapping("/getUser/{name}")

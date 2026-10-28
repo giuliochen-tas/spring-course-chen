@@ -1,6 +1,7 @@
 package com.example.spring_course.service;
 
-import com.example.spring_course.controller.model.UserResponse;
+import com.example.spring_course.model.UserResponse;
+import com.example.spring_course.exception.AppException;
 import com.example.spring_course.repository.model.UserEntity;
 import com.example.spring_course.repository.UserRepository;
 import com.example.spring_course.service.dto.UserRequestDTO;
@@ -58,6 +59,12 @@ public class UserService {
         if (user == null || user.isEmpty()){
             throw new NoSuchElementException("User not found");
         }
+        return user;
+    }
+
+    public UserEntity findById(Long id){
+        UserEntity user = userRepository.findById(id)
+                .orElseThrow(() -> new AppException("User " + id + " not found"));
         return user;
     }
 }

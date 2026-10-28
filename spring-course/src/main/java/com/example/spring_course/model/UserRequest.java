@@ -1,8 +1,6 @@
-package com.example.spring_course.controller.model;
+package com.example.spring_course.model;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,8 +12,10 @@ public class UserRequest {
 
     @NotBlank
     private String name;
-    @NotBlank
+    @Email(message = "Email must be valid")
+    @NotBlank(message = "Email is mandatory")
     private String email;
+    @Min(value = 1, message = "Age must be greater than 1")
     @NotNull
     private int age;
     @NotBlank
