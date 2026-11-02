@@ -1,16 +1,16 @@
 package com.example.spring_course.exception;
 
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 @Getter
 public class AppException extends RuntimeException {
-    private final transient AppErrorCodeMessageEnum codeMessage;
-    private final transient Object[] args;
 
-    public AppException(AppErrorCodeMessageEnum codeMessage, Object[] args) {
-        super();
-        this.codeMessage = codeMessage;
-        this.args = args;
+    private HttpStatus status;
+
+    public AppException(String message, HttpStatus status) {
+        super(message);
+        this.status = status;
     }
 
 

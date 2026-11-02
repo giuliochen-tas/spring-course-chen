@@ -6,14 +6,16 @@ import com.example.spring_course.repository.model.UserEntity;
 import com.example.spring_course.repository.UserRepository;
 import com.example.spring_course.service.dto.UserRequestDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
     private final UserRepository userRepository;
 
@@ -29,10 +31,10 @@ public class UserService {
             user.setAddress(requestDTO.getAddress());
             userRepository.save(user);
 
-            return new UserResponse("" + user.getId(), user.getName(), user.getEmail(),
+            return new UserResponse(user.getId(), user.getName(), user.getEmail(),
                     user.getAge(), user.getAddress());
         }
-        return new UserResponse("" + userEntity.get().getId(), userEntity.get().getName(),
+        return new UserResponse(userEntity.get().getId(), userEntity.get().getName(),
                 userEntity.get().getEmail(), userEntity.get().getAge(), userEntity.get().getAddress());
     }
 
@@ -41,30 +43,19 @@ public class UserService {
     }
 
     public List<UserEntity> searchByName(String name){
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Name is required");
-        }
         List<UserEntity> user = userRepository.searchByName(name);
-        if (user == null || user.isEmpty()){
-            throw new NoSuchElementException("User not found");
-        }
         return user;
     }
 
     public List<UserEntity> searchByEmail(String email){
-        if (email == null || email.isBlank()) {
-            throw new IllegalArgumentException("Email is required");
-        }
         List<UserEntity> user = userRepository.searchByEmail(email);
-        if (user == null || user.isEmpty()){
-            throw new NoSuchElementException("User not found");
-        }
+        log.info("User found for email {} and size {}", email, user.size());
         return user;
     }
 
-    public UserEntity findById(Long id){
+    public UserResponse findById(Long id){
         UserEntity user = userRepository.findById(id)
-                .orElseThrow(() -> new AppException("User " + id + " not found"));
-        return user;
+                .orElseThrow(() -> new AppException("User ID " + id + " not found", HttpStatus.NOT_FOUND));
+        return new UserResponse(user.getId(), user.getName(), user.getEmail(), user.getAge(), user.getAddress());
     }
 }
