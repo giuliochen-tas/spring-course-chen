@@ -6,9 +6,16 @@ import com.example.spring_course.repository.model.UserEntity;
 import com.example.spring_course.service.UserService;
 import com.example.spring_course.service.dto.UserRequestDTO;
 import com.example.spring_course.service.mapper.UserRequestMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,12 +24,33 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
+@Tag(name = "Controller", description = "Controller for user management")
 public class UserController {
 
     private final UserService userService;
     private final UserRequestMapper userRequestMapper;
 
     @PostMapping("/createUser")
+    @Operation(summary = "Create user", description = "Creates an user if it doesnt exist")
+    @ApiResponse(
+            responseCode = "200",
+            description = "User created successfully",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                    examples = @ExampleObject(
+                            """
+                                {
+                                      "id": 1
+                                      "name": "Giulio",
+                                      "email": "giulio.chen@tasgroup.eu",
+                                      "age": 29,
+                                      "address": "MI - IT"
+                                }
+                            """
+                    ),
+                    schema = @Schema(implementation = UserResponse.class)
+            )
+    )
     public ResponseEntity<UserResponse> createUser(@RequestBody @Valid UserRequest user){
         UserRequestDTO requestDTO = userRequestMapper.toRequestDTO(user);
         UserResponse response = userService.createUser(requestDTO);
@@ -30,6 +58,12 @@ public class UserController {
     }
 
     @GetMapping("/getAllUsers")
+    @Operation(summary = "Get all users", description = "Gets all the users")
+    @ApiResponse(
+            responseCode = "200",
+            description = "Users retrieved successfully",
+            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)
+    )
     public ResponseEntity<List<UserEntity>> getAllUsers(){
         return ResponseEntity.ok(userService.getAllUsers());
     }

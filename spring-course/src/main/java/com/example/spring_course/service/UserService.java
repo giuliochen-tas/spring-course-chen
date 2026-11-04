@@ -29,9 +29,9 @@ public class UserService {
             user.setEmail(email);
             user.setAge(requestDTO.getAge());
             user.setAddress(requestDTO.getAddress());
-            userRepository.save(user);
+            UserEntity savedUser = userRepository.save(user);
 
-            return new UserResponse(user.getId(), user.getName(), user.getEmail(),
+            return new UserResponse(savedUser.getId(), user.getName(), user.getEmail(),
                     user.getAge(), user.getAddress());
         }
         return new UserResponse(userEntity.get().getId(), userEntity.get().getName(),
