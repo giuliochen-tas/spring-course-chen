@@ -1,5 +1,6 @@
 package com.example.spring_course.controller;
 
+import com.example.spring_course.model.OrdineRequest;
 import com.example.spring_course.model.OrdineResponse;
 import com.example.spring_course.model.UserRequest;
 import com.example.spring_course.model.UserResponse;
@@ -10,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,35 +26,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/ordini")
-@Tag(name = "Controller", description = "Controller for order management")
+@Tag(name = "Ordini", description = "API per la gestione degli ordini dei clienti")
 public class OrdineController {
 
     private final OrdineService ordineService;
 
-    /*
-    @PostMapping("/createOrder")
-    @Operation(summary = "Create order", description = "Creates an order")
-    @ApiResponse(
-            responseCode = "200",
-            description = "Order created successfully",
-            content = @Content(
-                    mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    examples = @ExampleObject(
-                            """
-                                {
-                                      "id": 1
-                                      "name": "Giulio",
-                                      "email": "giulio.chen@tasgroup.eu",
-                                      "age": 29,
-                                      "address": "MI - IT"
-                                }
-                            """
-                    ),
-                    schema = @Schema(implementation = UserResponse.class)
-            )
-    )
-    public ResponseEntity<OrdineResponse> createOrder(@RequestBody @Valid OrdineRequest ordine){
-        return ResponseEntity.status(HttpStatus.CREATED).body(null);
+    @PostMapping("/creaOrdine")
+    @Operation(summary = "Creazione di un nuovo ordine", description = "Registra un nuovo ordine, calcola il totale e imposta lo stato iniziale a RICEVUTO.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Ordine creato con successo"),
+            @ApiResponse(responseCode = "400", description = "Dati di input non validi")
+    })
+    public ResponseEntity<OrdineResponse> creaOrdine(@Valid @RequestBody OrdineRequest request) {
+        OrdineResponse response = ordineService.creaOrdine(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-    */
 }
