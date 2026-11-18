@@ -10,6 +10,19 @@ services:
     volumes:
       - dati-dblocale:/var/lib/postgresql/data
 
+  postgres-flyway:
+    image: postgres:16
+    container_name: postgres-flyway
+    environment:
+      POSTGRES_DB: local_db_flyway
+      POSTGRES_USER: locale
+      POSTGRES_PASSWORD: locale
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_flyway_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
   mongo:
     image: mongo:8.0
     container_name: spring-course-mongodb
@@ -40,3 +53,4 @@ services:
 volumes:
   dati-dblocale:
   dati-mongodb:
+  postgres_flyway_data:
