@@ -77,6 +77,7 @@ public class OrdineEntity {
     private Double totale;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "stato", nullable = false, length = 20)
     private StatoOrdine stato;
 
