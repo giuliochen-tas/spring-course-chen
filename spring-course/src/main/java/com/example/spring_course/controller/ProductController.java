@@ -1,60 +1,72 @@
 package com.example.spring_course.controller;
 
-import com.example.spring_course.model.ProductRequest;
+import com.example.spring_course.model.ProductMongoRequest;
 import com.example.spring_course.model.ProductResponse;
+import com.example.spring_course.service.ProductAsyncService;
 import com.example.spring_course.service.ProductService;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
-@RequestMapping("/api/catalog/products")
+@RequestMapping("/api/products")
 public class ProductController {
-    private final ProductService service;
 
-    public ProductController(ProductService service) {
-        this.service = service;
+    private static final Logger log = LoggerFactory.getLogger(ProductController.class);
+
+    private final ProductService productService;
+    private final ProductAsyncService productAsyncService;
+
+    public ProductController(ProductService productService,
+                             ProductAsyncService productAsyncService) {
+        this.productService = productService;
+        this.productAsyncService = productAsyncService;
     }
 
-    @GetMapping("/category/{category}")
-    public List<ProductResponse> findByCategory(@PathVariable String category) {
-        return service.findByCategory(category);
-    }
-
-    @GetMapping("/search")
-    public List<ProductResponse> searchByName(
-            @RequestParam String name) {
-        return service.searchByName(name);
-    }
-
-    @PostMapping("/admin/create")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ProductResponse create(@Valid @RequestBody ProductRequest request) {
-        return service.create(request);
+    public ProductResponse create(@Valid @RequestBody ProductMongoRequest request) {
+        return productService.create(request);
     }
 
-    @GetMapping("/public/all")
+    @GetMapping
     public List<ProductResponse> findAll() {
-        return service.findAll();
+        return productService.findAll();
     }
 
-    @GetMapping("/user/{id}")
-    public ProductResponse findById(@PathVariable String id) {
-        return service.findById(id);
+    @GetMapping("/{id}")
+    public ProductResponse findById(@PathVariable Long id) {
+        return productService.findById(id);
     }
 
-    @PutMapping("/admin/update/{id}")
+    @PutMapping("/{id}")
     public ProductResponse update(
-            @PathVariable String id,
-            @Valid @RequestBody ProductRequest request) {
-        return service.update(id, request);
+            @PathVariable Long id,
+            @Valid @RequestBody ProductMongoRequest request) {
+        return productService.update(id, request);
     }
 
-    @DeleteMapping("/admin/delete/{id}")
+    @GetMapping("/{id}/async")
+    public CompletableFuture<ProductResponse> findByIdAsync(
+            @PathVariable Long id) {
+
+        log.info("CONTROLLER START - thread={}", Thread.currentThread().getName());
+
+        CompletableFuture<ProductResponse> future = productAsyncService.findById(id);
+
+        log.info("CONTROLLER END - thread={}", Thread.currentThread().getName());
+
+        return future;
+    }
+
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable String id) {
-        service.delete(id);
+    public void delete(@PathVariable Long id) {
+        productService.delete(id);
     }
 }
