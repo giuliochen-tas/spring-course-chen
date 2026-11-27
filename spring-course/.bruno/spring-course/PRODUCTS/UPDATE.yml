@@ -1,0 +1,28 @@
+info:
+  name: UPDATE
+  type: http
+  seq: 5
+
+http:
+  method: PUT
+  url: "{{base_url}}/api/products/1"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Samsung OLED",
+        "description": "Televisione",
+        "price": 999.99,
+        "category": "TV",
+        "brand": "Samsung"
+      }
+  auth:
+    type: bearer
+    token: "{{access_token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

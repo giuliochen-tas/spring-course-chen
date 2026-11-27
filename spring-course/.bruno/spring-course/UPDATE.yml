@@ -1,0 +1,25 @@
+info:
+  name: UPDATE
+  type: http
+  seq: 5
+
+http:
+  method: PUT
+  url: http://localhost:8080/api/catalog/products/{id}
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Notebook Lenovo aggiornato",
+        "description": "Notebook 32GB RAM e SSD 1TB",
+        "price": 1199.99,
+        "category": "Informatica"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

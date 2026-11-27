@@ -1,0 +1,32 @@
+info:
+  name: CREATE TV
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: http://localhost:8080/api/catalog/products
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Samsung OLED",
+        "price": 1499.99,
+        "category": "TV",
+        "brand": "Samsung",
+        "technicalDetails": {
+          "resolution": "4K",
+          "screenSize": 65,
+          "technology": "OLED",
+          "smartTv": true,
+          "refreshRate": 120
+        }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

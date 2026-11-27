@@ -1,0 +1,35 @@
+info:
+  name: CREATE Notebook
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: http://localhost:8080/api/catalog/products/admin/create
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Lenovo ThinkPad",
+        "price": 1299.99,
+        "category": "NOTEBOOK",
+        "brand": "Lenovo",
+        "technicalDetails": {
+          "processor": "Intel i7",
+          "ram": 32,
+          "storage": "1TB SSD",
+          "screenSize": 15.6,
+          "touchscreen": false
+        }
+      }
+  auth:
+    type: basic
+    username: admin
+    password: admin123
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

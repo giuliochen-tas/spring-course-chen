@@ -1,0 +1,28 @@
+info:
+  name: CREATE
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{base_url}}/api/products"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Samsung OLED",
+        "description": "Televisione",
+        "price": 1499.99,
+        "category": "TV",
+        "brand": "Samsung"
+      }
+  auth:
+    type: bearer
+    token: "{{access_token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

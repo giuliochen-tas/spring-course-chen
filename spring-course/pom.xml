@@ -156,6 +156,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-cache</artifactId>
 		</dependency>
+		<!-- Spring Batch (metadati persistiti su PostgreSQL) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-batch-jdbc</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
